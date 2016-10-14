@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Supercharging stations per country (Excluding the US)</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="Chart.bundle.js"></script>
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div style="width: 75%">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        var randomScalingFactor = function() {
+            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+        };
+        var randomColorFactor = function() {
+            return Math.round(Math.random() * 255);
+        };
+
+        var barChartData = {
+            labels: ["Germany", "France", "UK", "Norway", "Canada", "Sweeden", "Italy", "Switzerland", "Austria", "Denmark", "Japan", "Australia", "Netherlands", "Finland", "Belgium", "Jordan", "Spain", "Slovenia", "Poland", "Croatia", "Luxenburg","Russia", "Slovakia", "Czech Republic"],
+            datasets: [{
+                label: 'Number of Supercharging stations per country',
+                backgroundColor: "rgba(220,220,220,0.5)",
+                data: [ 58, 33, 31, 25, 17, 16, 12, 10, 9, 9, 9, 8, 7, 5, 1, 3, 2, 2, 1, 1, 1, 1, 1, 1]
+            }]
+
+        };
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    title:{
+                        display:true,
+                        text:"Supercharging stations per country (Excluding the US)"
+                    },
+                    tooltips: {
+                        mode: 'label'
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }
+                }
+            });
+        };
+
+        $('#randomizeData').click(function() {
+            $.each(barChartData.datasets, function(i, dataset) {
+                dataset.backgroundColor = 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
+                dataset.data = [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()];
+
+            });
+            window.myBar.update();
+        });
+    </script>
+</body>
+
+</html>
